@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ниточка Иголочка — ателье по шитью и ремонту одежды</title>
+<style>
+  /* ===== Базовые стили ===== */
+  :root {
+    --pink: #f8cdd6;
+    --pink-soft: #fdeef2;
+    --powder: #f6dee4;
+    --accent: #e090a8;
+    --accent-dark: #d37a95;
+    --text: #4a3a40;
+    --grey: #f4f4f6;
+    --white: #ffffff;
+    --radius: 14px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    font-family: 'Segoe UI', 'Trebuchet MS', Verdana, sans-serif;
+    color: var(--text);
+    background: linear-gradient(180deg, var(--pink-soft) 0%, var(--white) 40%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ===== Шапка ===== */
+  header {
+    background: var(--white);
+    box-shadow: 0 2px 12px rgba(224, 144, 168, .25);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--text);
+  }
+  .logo-icon {
+    font-size: 30px;
+    display: inline-block;
+    animation: thread-swing 4s ease-in-out infinite;
+    transform-origin: top center;
+  }
+  @keyframes thread-swing {
+    0%, 100% { transform: rotate(0deg); }
+    25%      { transform: rotate(-8deg); }
+    75%      { transform: rotate(8deg); }
+  }
+  .logo-text {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: .5px;
+    line-height: 1.15;
+  }
+  .logo-text small {
+    display: block;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--accent);
+  }
+
+  .header-contacts {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .phone-link {
+    font-weight: 700;
+    color: var(--text);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .phone-link:hover { color: var(--accent); }
+
+  /* ===== Кнопки ===== */
+  .btn {
+    display: inline-block;
+    padding: 10px 22px;
+    border: none;
+    border-radius: 30px;
+    background: var(--accent);
+    color: var(--white);
+    font-size: 16px;
+    font-family: inherit;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+  }
+  .btn:hover, .btn:active {
+    background: var(--accent-dark);
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 6px 16px rgba(224, 144, 168, .45);
+  }
+  .btn-ghost {
+    background: var(--white);
+    color: var(--accent);
+    border: 2px solid var(--accent);
+  }
+  .btn-ghost:hover, .btn-ghost:active { background: var(--pink-soft); }
+  .btn-big { font-size: 19px; padding: 15px 34px; }
+
+  /* ===== Меню вкладок ===== */
+  nav { background: var(--powder); }
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .nav-btn {
+    background: none;
+    border: none;
+    padding: 13px 20px;
+    font-size: 16px;
+    font-family: inherit;
+    color: var(--text);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: color .2s, border-color .2s;
+  }
+  .nav-btn:hover { color: var(--accent); }
+  .nav-btn.active {
+    color: var(--accent);
+    font-weight: 700;
+    border-bottom-color: var(--accent);
+  }
+  .burger {
+    display: none;
+    width: 100%;
+    background: none;
+    border: none;
+    font-size: 18px;
+    font-family: inherit;
+    color: var(--text);
+    cursor: pointer;
+    padding: 12px 20px;
+    text-align: left;
+  }
+
+  /* ===== Основной контент ===== */
+  main { flex: 1; }
+  .tab-section {
+    display: none;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+  }
+  .tab-section.active {
+    display: block;
+    animation: fade-in .5s ease both;
+  }
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  h1 { font-size: 42px; line-height: 1.2; margin-bottom: 18px; }
+  h2 { font-size: 30px; margin-bottom: 20px; color: var(--accent); }
+  h3 { font-size: 19px; }
+  .lead { font-size: 19px; max-width: 640px; margin-bottom: 26px; }
+
+  /* ===== Главная ===== */
+  .advantages {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 34px;
+  }
+  .adv-card {
+    background: var(--white);
+    border: 2px solid var(--pink);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    text-align: center;
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .adv-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(224, 144, 168, .3);
+  }
+  .adv-card .emoji { font-size: 36px; display: block; margin-bottom: 10px; }
+
+  /* ===== Услуги ===== */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .service-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 26px 22px;
+    border-top: 5px solid var(--pink);
+    box-shadow: 0 3px 10px rgba(224, 144, 168, .18);
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s;
+  }
+  .service-card:hover {
+    transform: translateY(-5px);
+    border-top-color: var(--accent);
+    box-shadow: 0 10px 22px rgba(224, 144, 168, .35);
+  }
+  .service-card .emoji { font-size: 40px; display: block; margin-bottom: 12px; }
+  .service-card p { font-size: 15px; line-height: 1.5; }
+
+  /* ===== Цены ===== */
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .price-table {
+    width: 100%;
+    min-width: 420px;
+    border-collapse: collapse;
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(224, 144, 168, .2);
+  }
+  .price-table th, .price-table td {
+    padding: 14px 18px;
+    text-align: left;
+    border-bottom: 1px solid var(--pink-soft);
+  }
+  .price-table th { background: var(--pink); color: var(--text); }
+  .price-table tr:last-child td { border-bottom: none; }
+  .price-table tbody tr { transition: background .2s; }
+  .price-table tbody tr:hover { background: var(--pink-soft); }
+  .table-note {
+    margin-top: 18px;
+    padding: 14px 18px;
+    background: var(--grey);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    font-style: italic;
+  }
+
+  /* ===== О нас ===== */
+  .work-hours {
+    background: linear-gradient(120deg, var(--accent), var(--pink));
+    color: var(--white);
+    border-radius: var(--radius);
+    padding: 26px 28px;
+    margin-bottom: 26px;
+    text-align: center;
+  }
+  .work-hours span { display: block; font-size: 26px; font-weight: 700; }
+  .work-hours small { font-size: 15px; opacity: .9; }
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin: 26px 0;
+  }
+  .fact {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 20px;
+    text-align: center;
+    border: 2px dashed var(--pink);
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .fact:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(224, 144, 168, .3);
+  }
+  .fact .emoji { font-size: 34px; display: block; margin-bottom: 8px; }
+  .call-block { text-align: center; margin-top: 34px; }
+  .call-block p { margin: 12px 0 18px; font-size: 18px; }
+
+  /* ===== Поддержка ===== */
+  .contact-list { list-style: none; margin-bottom: 30px; }
+  .contact-list li { margin-bottom: 12px; font-size: 17px; }
+  .support-form {
+    background: var(--white);
+    border: 2px solid var(--pink);
+    border-radius: var(--radius);
+    padding: 26px;
+    max-width: 460px;
+  }
+  .support-form label { display: block; margin: 14px 0 6px; font-weight: 600; }
+  .support-form input {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid var(--powder);
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: inherit;
+    background: var(--pink-soft);
+    transition: border-color .2s;
+  }
+  .support-form input:focus { outline: none; border-color: var(--accent); }
+  .support-form .btn { margin-top: 20px; width: 100%; }
+  .form-success {
+    display: none;
+    margin-top: 16px;
+    padding: 12px;
+    background: #eaf7ec;
+    color: #2e6b3a;
+    border-radius: 8px;
+    text-align: center;
+    animation: fade-in .4s ease both;
+  }
+
+  /* ===== Подвал ===== */
+  footer {
+    background: var(--powder);
+    padding: 26px 20px 70px; /* нижний отступ — чтобы не перекрывала плавающая кнопка */
+    text-align: center;
+    font-size: 15px;
+  }
+  footer .phone-link { display: inline-block; margin: 8px 0; }
+  footer .muted { color: #8a7078; font-size: 13px; }
+
+  /* ===== Плавающая кнопка «Позвонить» (только телефоны) ===== */
+  .mobile-call {
+    display: none;
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    z-index: 20;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    box-shadow: 0 6px 20px rgba(224, 144, 168, .55);
+  }
+
+  /* ===== Планшеты ===== */
+  @media (max-width: 820px) {
+    h1 { font-size: 32px; }
+    h2 { font-size: 26px; }
+    .advantages, .services-grid, .facts { grid-template-columns: repeat(2, 1fr); }
+    .burger { display: block; }
+    .nav-inner {
+      flex-direction: column;
+      align-items: stretch;
+      display: none;
+      padding-bottom: 10px;
+    }
+    .nav-inner.open { display: flex; }
+    .nav-btn { padding: 14px 20px; text-align: center; border-bottom: none; border-left: 4px solid transparent; }
+    .nav-btn.active { border-left-color: var(--accent); background: var(--pink-soft); }
+  }
+
+  /* ===== Телефоны ===== */
+  @media (max-width: 560px) {
+    h1 { font-size: 26px; }
+    h2 { font-size: 23px; }
+    h3 { font-size: 17px; }
+    .lead { font-size: 17px; }
+    .tab-section { padding: 26px 16px 48px; }
+    .advantages, .services-grid, .facts { grid-template-columns: 1fr; }
+
+    /* Компактная шапка: логотип сверху, контакты под ним */
+    .header-inner { flex-direction: column; text-align: center; padding: 12px 14px; }
+    .header-contacts { justify-content: center; }
+    .header-contacts .phone-link { font-size: 18px; }
+    .header-contacts .btn-ghost { padding: 9px 16px; font-size: 14px; }
+    .logo-text { font-size: 20px; }
+
+    /* Большие удобные кнопки под палец */
+    .btn { padding: 13px 20px; font-size: 16px; }
+    .btn-big { width: 100%; font-size: 18px; padding: 16px 20px; }
+
+    .work-hours { padding: 20px 16px; }
+    .work-hours span { font-size: 21px; }
+
+    .support-form { padding: 20px 16px; }
+
+    /* Плавающая кнопка «Позвонить» всегда под рукой */
+    .mobile-call { display: block; }
+    footer { padding-bottom: 84px; }
+  }
+
+  /* ===== Крупные экраны ===== */
+  @media (min-width: 1600px) {
+    .header-inner, .nav-inner, .tab-section { max-width: 1300px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= ШАПКА ================= -->
+<header>
+  <div class="header-inner">
+    <a class="logo" href="#" onclick="openTab('home'); return false;">
+      <span class="logo-icon">🧵</span>
+      <span class="logo-text">Ниточка Иголочка<small>ателье по шитью</small></span>
+    </a>
+    <div class="header-contacts">
+      <a class="phone-link" href="tel:+79144130468">+7 914 413 04 68</a>
+      <a class="btn" href="tel:+79144130468">📞 Позвонить</a>
+      <button class="btn btn-ghost" onclick="openTab('support')">Заказать консультацию</button>
+    </div>
+  </div>
+</header>
+
+<!-- ================= МЕНЮ ================= -->
+<nav>
+  <button class="burger" id="burger" onclick="toggleMenu()" aria-label="Открыть меню">☰ Меню</button>
+  <div class="nav-inner" id="nav">
+    <button class="nav-btn active" data-tab="home"     onclick="openTab('home')">Главная</button>
+    <button class="nav-btn"        data-tab="services" onclick="openTab('services')">Услуги</button>
+    <button class="nav-btn"        data-tab="prices"   onclick="openTab('prices')">Цены</button>
+    <button class="nav-btn"        data-tab="about"    onclick="openTab('about')">О нас</button>
+    <button class="nav-btn"        data-tab="support"  onclick="openTab('support')">Поддержка</button>
+  </div>
+</nav>
+
+<main>
+  <!-- ================= ВКЛАДКА: ГЛАВНАЯ ================= -->
+  <section class="tab-section active" id="home">
+    <h1>Услуги по шитью и ремонту одежды</h1>
+    <p class="lead">
+      Уютное ателье, где каждая вещь — с душой. Пошив, ремонт и подгонка одежды
+      любых сложностей. Быстро, аккуратно и с заботой о вашем комфорте.
+    </p>
+    <button class="btn btn-big" onclick="openTab('services')">Наши услуги</button>
+
+    <div class="advantages">
+      <div class="adv-card">
+        <span class="emoji">⚡</span>
+        <h3>Быстро</h3>
+        <p>Срочный ремонт — уже за один день. Не заставляем ждать.</p>
+      </div>
+      <div class="adv-card">
+        <span class="emoji">✨</span>
+        <h3>Аккуратно</h3>
+        <p>Ровные швы, чистые строчки и внимание к каждой мелочи.</p>
+      </div>
+      <div class="adv-card">
+        <span class="emoji">💗</span>
+        <h3>С душой</h3>
+        <p>Каждую вещь шьём так, будто она для себя любимой.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ВКЛАДКА: УСЛУГИ ================= -->
+  <section class="tab-section" id="services">
+    <h2>Наши услуги</h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <span class="emoji">👗</span>
+        <h3>Пошив платьев</h3>
+        <p>Вечерние, повседневные и свадебные платья по вашим меркам и эскизам.</p>
+      </div>
+      <div class="service-card">
+        <span class="emoji">👖</span>
+        <h3>Ремонт джинсов</h3>
+        <p>Ушивём, укорачиваем, ставим латки и молнии, обновляем потёртости.</p>
+      </div>
+      <div class="service-card">
+        <span class="emoji">📏</span>
+        <h3>Подгонка по фигуре</h3>
+        <p>Посадим по фигуре пиджаки, платья, брюки — вещь сядет как влитая.</p>
+      </div>
+      <div class="service-card">
+        <span class="emoji">🪡</span>
+        <h3>Вышивка</h3>
+        <p>Именные монограммы, узоры и декоративная вышивка на любых изделиях.</p>
+      </div>
+      <div class="service-card">
+        <span class="emoji">🔒</span>
+        <h3>Замена молний</h3>
+        <p>На куртках, сумках, обуви и брюках. Быстро и с гарантией на работу.</p>
+      </div>
+      <div class="service-card">
+        <span class="emoji">🪟</span>
+        <h3>Пошив штор</h3>
+        <p>Шторы и тюль по вашим размерам: от классики до современных ламбрекенов.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ВКЛАДКА: ЦЕНЫ ================= -->
+  <section class="tab-section" id="prices">
+    <h2>Цены</h2>
+    <div class="table-wrap">
+      <table class="price-table">
+        <thead>
+          <tr><th>Услуга</th><th>Стоимость</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Замена молнии</td><td>от 500 ₽</td></tr>
+          <tr><td>Подгонка брюк</td><td>от 700 ₽</td></tr>
+          <tr><td>Подшив платья</td><td>от 400 ₽</td></tr>
+          <tr><td>Замена подкладки куртки</td><td>от 1200 ₽</td></tr>
+          <tr><td>Пошив штор</td><td>от 1500 ₽ за комплект</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">Точную стоимость назовём после осмотра изделия 💬</p>
+  </section>
+
+  <!-- ================= ВКЛАДКА: О НАС ================= -->
+  <section class="tab-section" id="about">
+    <h2>О нас</h2>
+
+    <div class="work-hours">
+      <small>Режим работы</small>
+      <span>Работаем ежедневно с 10:00 до 19:00</span>
+    </div>
+
+    <p class="lead">
+      «Ниточка Иголочка» — маленькая семейная мастерская, где одежду любят
+      и берегут. Мы шьём и ремонтируем уже больше десяти лет и знаем о ткани,
+      нитках и швейных машинках почти всё. Приходите — обсудим вашу идею
+      за чашкой чая.
+    </p>
+
+    <div class="facts">
+      <div class="fact">
+        <span class="emoji">🏆</span>
+        <p><strong>Более 10 лет опыта</strong><br>Сотни довольных клиентов и спасённых вещей.</p>
+      </div>
+      <div class="fact">
+        <span class="emoji">⏱</span>
+        <p><strong>Срочный ремонт за 1 день</strong><br>Если нужно «уже сегодня» — мы постараемся.</p>
+      </div>
+      <div class="fact">
+        <span class="emoji">🪞</span>
+        <p><strong>Бесплатная примерка</strong><br>Примерим и подгоним всё до идеала.</p>
+      </div>
+    </div>
+
+    <div class="call-block">
+      <a class="btn btn-big" href="tel:+79144130468">📞 Позвонить нам</a>
+      <p>
+        Телефон:
+        <a class="phone-link" href="tel:+79144130468">+7 914 413 04 68</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= ВКЛАДКА: ПОДДЕРЖКА ================= -->
+  <section class="tab-section" id="support">
+    <h2>Поддержка и контакты</h2>
+
+    <ul class="contact-list">
+      <li>📞 Телефон: <a class="phone-link" href="tel:+79144130468">+7 914 413 04 68</a></li>
+      <li>✉️ Email: <a class="phone-link" href="mailto:nitochka.igolochka@mail.ru">nitochka.igolochka@mail.ru</a></li>
+      <li>💬 Мессенджер: Telegram / WhatsApp — тот же номер
+        <a class="phone-link" href="tel:+79144130468">+7 914 413 04 68</a></li>
+    </ul>
+
+    <form class="support-form" id="supportForm" onsubmit="return submitForm(event)">
+      <h3>Оставьте заявку — перезвоним</h3>
+      <label for="name">Ваше имя</label>
+      <input type="text" id="name" name="name" placeholder="Например, Анна" required autocomplete="name">
+      <label for="phone">Телефон</label>
+      <input type="tel" id="phone" name="phone" placeholder="+7 ___ ___ __ __" required autocomplete="tel">
+      <button type="submit" class="btn">Отправить</button>
+      <div class="form-success" id="formSuccess">Спасибо, мы свяжемся с вами!</div>
+    </form>
+  </section>
+</main>
+
+<!-- ================= ПОДВАЛ ================= -->
+<footer>
+  <div>© Ниточка Иголочка</div>
+  <a class="phone-link" href="tel:+79144130468">📞 +7 914 413 04 68</a>
+  <div class="muted">Локальное ателье по шитью и ремонту одежды</div>
+</footer>
+
+<!-- Плавающая кнопка звонка — только на телефонах -->
+<a class="btn mobile-call" href="tel:+79144130468">📞 Позвонить: +7 914 413 04 68</a>
+
+<script>
+  // ===== Переключение вкладок =====
+  function openTab(tabId) {
+    document.querySelectorAll('.tab-section').forEach(function (section) {
+      section.classList.toggle('active', section.id === tabId);
+    });
+    document.querySelectorAll('.nav-btn').forEach(function (btn) {
+      btn.classList.toggle('active', btn.dataset.tab === tabId);
+    });
+    closeMenu();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ===== Мобильное меню =====
+  function toggleMenu() {
+    document.getElementById('nav').classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('nav').classList.remove('open');
+  }
+
+  // ===== Форма (демо, без реальной отправки) =====
+  function submitForm(event) {
+    event.preventDefault();
+    document.getElementById('formSuccess').style.display = 'block';
+    document.getElementById('supportForm').reset();
+    return false;
+  }
+</script>
+</body>
+</html>
